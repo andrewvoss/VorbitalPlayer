@@ -16,6 +16,7 @@
 #include <QSettings>
 #include <QStringList>
 #include <QMetaMethod>
+#include <QCloseEvent>
 
 #include "add.xpm"
 #include "folder.xpm"
@@ -33,8 +34,6 @@
 
 /* TODO: Create corresponding signals and slots.
 BEGIN_EVENT_TABLE( VorbitalDlg, QDialog )
-	EVT_LISTBOX_DCLICK( ID_PLAYLIST, VorbitalDlg::OnPlaylistDoubleClick )
-    EVT_CLOSE( VorbitalDlg::OnQuit )
     EVT_SCROLL( VorbitalDlg::OnVolume )
     EVT_COMMAND( wxID_ANY, EVT_LISTPOSITION, VorbitalDlg::OnListPosition )
 END_EVENT_TABLE()*/
@@ -145,7 +144,7 @@ void VorbitalDlg::LoadSettings()
         setFixedWidth(sizex);
 		layout();
 	}
-
+    printf("Loaded Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d\n", _randomize, volume, sizex, sizey);
 	delete configData;
 }
 
@@ -158,7 +157,7 @@ void VorbitalDlg::SaveSettings()
 	QSize wsize = size();
 	configData->setValue("sizex", wsize.width());
 	configData->setValue("sizey", wsize.height());
-
+    printf("Saved Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d\n", _randomize, _volumeSlider->value(), wsize.width(), wsize.height());
 	delete configData;
 }
 
@@ -324,7 +323,7 @@ void VorbitalDlg::CreateControls()
 
 	_lstPlaylist = new QListWidget( itemDialog1 );
 	itemBoxSizer35->addWidget(_lstPlaylist);
-	//_lstPlaylist->Connect(ID_PLAYLIST, wxEVT_RIGHT_DOWN, wxMouseEventHandler(VorbitalDlg::OnRightClick), NULL, this);
+	connect(_lstPlaylist, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnPlaylistDoubleClick(QListWidgetItem*)), Qt::AutoConnection);
 
     connect(this, SIGNAL(bitrateChanged(int)), this, SLOT(OnBitrate(int)), Qt::AutoConnection);
     connect(this, SIGNAL(numchannelsChanged(int)), this, SLOT(OnNumChannels(int)), Qt::AutoConnection);
@@ -626,7 +625,7 @@ void VorbitalDlg::OnButtonClearClick()
     //OnButtonStopClick();
 }
 
-void VorbitalDlg::OnPlaylistDoubleClick()
+void VorbitalDlg::OnPlaylistDoubleClick(QListWidgetItem*)
 {
 	// Identical to clicking play, but at the specified position.
 	//
@@ -652,6 +651,7 @@ void VorbitalDlg::OnPlaylistDoubleClick()
     printf("Setting VorbitalDlg play state to STOPPED.\n");
 	_playState = STOPPED;
 	_listPosition = _lstPlaylist->currentRow();
+    printf("Setting playlist position to %d\n", _listPosition);
 	OnButtonPlayClick();
 }
 
@@ -693,7 +693,7 @@ void VorbitalDlg::OnButtonPlayClick()
 /**
  @brief  EVT_QUIT handler.
 */
-void VorbitalDlg::OnQuit(QCloseEvent &)
+void VorbitalDlg::OnQuit()
 {
 	SaveSettings();
 	_done = true;
@@ -702,6 +702,10 @@ void VorbitalDlg::OnQuit(QCloseEvent &)
 #else
     usleep(50);
 #endif
+    printf("Closing OpenAL context and device.\n");
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(_context);
+    alcCloseDevice(_device);
 }
 
 /**
@@ -855,3 +859,8 @@ void VorbitalDlg::UpdateSampleRate(int samplerate)
     emit samplerateChanged(samplerate);
 }
 
+void VorbitalDlg::closeEvent(QCloseEvent* event)
+{
+    OnQuit();
+    event->accept();
+}

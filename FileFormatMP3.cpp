@@ -13,7 +13,7 @@ bool FileFormatMP3::Open(QString& filename)
 {
 	_filePosition = 0;
 	if( mpg123_open(_mpg123, filename.toStdString().c_str()) != MPG123_OK ||
-		mpg123_getformat(_mpg123, &_rate, &_channels, &_encoding) != MPG123_OK )
+		mpg123_getformat(_mpg123, &_sampleRate, &_channels, &_encoding) != MPG123_OK )
 	{
 		QMessageBox(QMessageBox::Critical, filename, QString("Could not open file."), QMessageBox::Ok);
 		return false;
@@ -34,7 +34,7 @@ bool FileFormatMP3::Open(QString& filename)
 
 int FileFormatMP3::GetBitrate()
 {
-	return _rate;
+	return _bitRate;
 }
 
 int FileFormatMP3::GetChannels()
@@ -49,7 +49,7 @@ int FileFormatMP3::GetFormat()
 
 int FileFormatMP3::GetSampleRate()
 {
-	return _rate;
+	return _sampleRate;
 }
 
 bool FileFormatMP3::Init()

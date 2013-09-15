@@ -22,7 +22,8 @@ private:
 	static mpg123_handle* _mpg123;
 	int _channels;
 	int _encoding;
-	long _rate;
+	long _sampleRate;
+    long _bitRate;
 	int _filePosition;
 };
 

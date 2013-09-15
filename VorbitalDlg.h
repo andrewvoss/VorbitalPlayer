@@ -46,9 +46,8 @@ public:
     //bool OnDropFiles( const QArrayString& filename );
     void LoadFile( QString& filename );
     void OnMouseWheel();
-    void OnPlaylistDoubleClick();
     void OnListPosition();
-    void OnQuit(QCloseEvent& event);
+    void OnQuit();
     void OnRightClick();
     void ShowFileInfo(int index);
     static bool ShowToolTips();
@@ -71,7 +70,9 @@ public:
     void UpdateNumChannels(int channels);
     void UpdateBitrate(int bitrate);
     void UpdateSampleRate(int samplerate);
+    void closeEvent(QCloseEvent* event);
 public slots:
+    void OnPlaylistDoubleClick(QListWidgetItem* item);
     void OnNumChannels(int value);
     void OnBitrate(int bitrate);
     void OnSampleRate(int rate);

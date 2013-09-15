@@ -78,7 +78,7 @@ void PlaylistThread::run()
 #endif
                     printf("Updating channels, bitrate, and sample rate.\n");
                     _dlg->UpdateNumChannels(_dlg->GetMusicStream()->GetChannels() );
-                    _dlg->UpdateBitrate(_dlg->GetMusicStream()->GetBitrate() / 1000);
+                    _dlg->UpdateBitrate(_dlg->GetMusicStream()->GetBitrate());
                     _dlg->UpdateSampleRate(_dlg->GetMusicStream()->GetRate());
 				}
                 else

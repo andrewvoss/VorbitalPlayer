@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_VorbitalDlg_t {
-    QByteArrayData data[32];
-    char stringdata[443];
+    QByteArrayData data[35];
+    char stringdata[487];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,39 +41,43 @@ QT_MOC_LITERAL(8, 89, 17),
 QT_MOC_LITERAL(9, 107, 10),
 QT_MOC_LITERAL(10, 118, 11),
 QT_MOC_LITERAL(11, 130, 4),
-QT_MOC_LITERAL(12, 135, 13),
-QT_MOC_LITERAL(13, 149, 5),
-QT_MOC_LITERAL(14, 155, 9),
-QT_MOC_LITERAL(15, 165, 12),
-QT_MOC_LITERAL(16, 178, 4),
-QT_MOC_LITERAL(17, 183, 6),
-QT_MOC_LITERAL(18, 190, 7),
-QT_MOC_LITERAL(19, 198, 19),
-QT_MOC_LITERAL(20, 218, 25),
-QT_MOC_LITERAL(21, 244, 17),
-QT_MOC_LITERAL(22, 262, 17),
-QT_MOC_LITERAL(23, 280, 20),
-QT_MOC_LITERAL(24, 301, 20),
-QT_MOC_LITERAL(25, 322, 18),
-QT_MOC_LITERAL(26, 341, 19),
-QT_MOC_LITERAL(27, 361, 21),
-QT_MOC_LITERAL(28, 383, 18),
-QT_MOC_LITERAL(29, 402, 22),
-QT_MOC_LITERAL(30, 425, 7),
-QT_MOC_LITERAL(31, 433, 8)
+QT_MOC_LITERAL(12, 135, 21),
+QT_MOC_LITERAL(13, 157, 16),
+QT_MOC_LITERAL(14, 174, 4),
+QT_MOC_LITERAL(15, 179, 13),
+QT_MOC_LITERAL(16, 193, 5),
+QT_MOC_LITERAL(17, 199, 9),
+QT_MOC_LITERAL(18, 209, 12),
+QT_MOC_LITERAL(19, 222, 4),
+QT_MOC_LITERAL(20, 227, 6),
+QT_MOC_LITERAL(21, 234, 7),
+QT_MOC_LITERAL(22, 242, 19),
+QT_MOC_LITERAL(23, 262, 25),
+QT_MOC_LITERAL(24, 288, 17),
+QT_MOC_LITERAL(25, 306, 17),
+QT_MOC_LITERAL(26, 324, 20),
+QT_MOC_LITERAL(27, 345, 20),
+QT_MOC_LITERAL(28, 366, 18),
+QT_MOC_LITERAL(29, 385, 19),
+QT_MOC_LITERAL(30, 405, 21),
+QT_MOC_LITERAL(31, 427, 18),
+QT_MOC_LITERAL(32, 446, 22),
+QT_MOC_LITERAL(33, 469, 7),
+QT_MOC_LITERAL(34, 477, 8)
     },
     "VorbitalDlg\0numchannelsChanged\0\0"
     "channels\0bitrateChanged\0bitrate\0"
     "bitdepthChanged\0bitdepth\0samplerateChanged\0"
-    "samplerate\0timeChanged\0time\0OnNumChannels\0"
-    "value\0OnBitrate\0OnSampleRate\0rate\0"
-    "OnTime\0seconds\0OnButtonBrowseClick\0"
-    "OnButtonBrowseFolderClick\0OnButtonPlayClick\0"
-    "OnButtonStopClick\0OnButtonForwardClick\0"
-    "OnButtonReverseClick\0OnButtonPauseClick\0"
-    "OnButtonRemoveClick\0OnButtonSettingsClick\0"
-    "OnButtonClearClick\0OnButtonRandomizeClick\0"
-    "OnAbout\0OnVolume\0"
+    "samplerate\0timeChanged\0time\0"
+    "OnPlaylistDoubleClick\0QListWidgetItem*\0"
+    "item\0OnNumChannels\0value\0OnBitrate\0"
+    "OnSampleRate\0rate\0OnTime\0seconds\0"
+    "OnButtonBrowseClick\0OnButtonBrowseFolderClick\0"
+    "OnButtonPlayClick\0OnButtonStopClick\0"
+    "OnButtonForwardClick\0OnButtonReverseClick\0"
+    "OnButtonPauseClick\0OnButtonRemoveClick\0"
+    "OnButtonSettingsClick\0OnButtonClearClick\0"
+    "OnButtonRandomizeClick\0OnAbout\0OnVolume\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -83,7 +87,7 @@ static const uint qt_meta_data_VorbitalDlg[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      22,   14, // methods
+      23,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -91,30 +95,31 @@ static const uint qt_meta_data_VorbitalDlg[] = {
        5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  124,    2, 0x05,
-       4,    1,  127,    2, 0x05,
-       6,    1,  130,    2, 0x05,
-       8,    1,  133,    2, 0x05,
-      10,    1,  136,    2, 0x05,
+       1,    1,  129,    2, 0x05,
+       4,    1,  132,    2, 0x05,
+       6,    1,  135,    2, 0x05,
+       8,    1,  138,    2, 0x05,
+      10,    1,  141,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-      12,    1,  139,    2, 0x0a,
-      14,    1,  142,    2, 0x0a,
-      15,    1,  145,    2, 0x0a,
-      17,    1,  148,    2, 0x0a,
-      19,    0,  151,    2, 0x0a,
-      20,    0,  152,    2, 0x0a,
-      21,    0,  153,    2, 0x0a,
-      22,    0,  154,    2, 0x0a,
-      23,    0,  155,    2, 0x0a,
-      24,    0,  156,    2, 0x0a,
-      25,    0,  157,    2, 0x0a,
-      26,    0,  158,    2, 0x0a,
-      27,    0,  159,    2, 0x0a,
-      28,    0,  160,    2, 0x0a,
-      29,    0,  161,    2, 0x0a,
-      30,    0,  162,    2, 0x0a,
-      31,    1,  163,    2, 0x0a,
+      12,    1,  144,    2, 0x0a,
+      15,    1,  147,    2, 0x0a,
+      17,    1,  150,    2, 0x0a,
+      18,    1,  153,    2, 0x0a,
+      20,    1,  156,    2, 0x0a,
+      22,    0,  159,    2, 0x0a,
+      23,    0,  160,    2, 0x0a,
+      24,    0,  161,    2, 0x0a,
+      25,    0,  162,    2, 0x0a,
+      26,    0,  163,    2, 0x0a,
+      27,    0,  164,    2, 0x0a,
+      28,    0,  165,    2, 0x0a,
+      29,    0,  166,    2, 0x0a,
+      30,    0,  167,    2, 0x0a,
+      31,    0,  168,    2, 0x0a,
+      32,    0,  169,    2, 0x0a,
+      33,    0,  170,    2, 0x0a,
+      34,    1,  171,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -124,10 +129,11 @@ static const uint qt_meta_data_VorbitalDlg[] = {
     QMetaType::Void, QMetaType::Int,   11,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Int,   13,
-    QMetaType::Void, QMetaType::Int,    5,
+    QMetaType::Void, 0x80000000 | 13,   14,
     QMetaType::Void, QMetaType::Int,   16,
-    QMetaType::Void, QMetaType::Int,   18,
+    QMetaType::Void, QMetaType::Int,    5,
+    QMetaType::Void, QMetaType::Int,   19,
+    QMetaType::Void, QMetaType::Int,   21,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -140,7 +146,7 @@ static const uint qt_meta_data_VorbitalDlg[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   16,
 
        0        // eod
 };
@@ -155,23 +161,24 @@ void VorbitalDlg::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 2: _t->bitdepthChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->samplerateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 4: _t->timeChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: _t->OnNumChannels((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->OnBitrate((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->OnSampleRate((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->OnTime((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->OnButtonBrowseClick(); break;
-        case 10: _t->OnButtonBrowseFolderClick(); break;
-        case 11: _t->OnButtonPlayClick(); break;
-        case 12: _t->OnButtonStopClick(); break;
-        case 13: _t->OnButtonForwardClick(); break;
-        case 14: _t->OnButtonReverseClick(); break;
-        case 15: _t->OnButtonPauseClick(); break;
-        case 16: _t->OnButtonRemoveClick(); break;
-        case 17: _t->OnButtonSettingsClick(); break;
-        case 18: _t->OnButtonClearClick(); break;
-        case 19: _t->OnButtonRandomizeClick(); break;
-        case 20: _t->OnAbout(); break;
-        case 21: _t->OnVolume((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->OnPlaylistDoubleClick((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 6: _t->OnNumChannels((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->OnBitrate((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->OnSampleRate((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: _t->OnTime((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->OnButtonBrowseClick(); break;
+        case 11: _t->OnButtonBrowseFolderClick(); break;
+        case 12: _t->OnButtonPlayClick(); break;
+        case 13: _t->OnButtonStopClick(); break;
+        case 14: _t->OnButtonForwardClick(); break;
+        case 15: _t->OnButtonReverseClick(); break;
+        case 16: _t->OnButtonPauseClick(); break;
+        case 17: _t->OnButtonRemoveClick(); break;
+        case 18: _t->OnButtonSettingsClick(); break;
+        case 19: _t->OnButtonClearClick(); break;
+        case 20: _t->OnButtonRandomizeClick(); break;
+        case 21: _t->OnAbout(); break;
+        case 22: _t->OnVolume((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -235,13 +242,13 @@ int VorbitalDlg::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 22)
+        if (_id < 23)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 22;
+        _id -= 23;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 22)
+        if (_id < 23)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 22;
+        _id -= 23;
     }
     return _id;
 }

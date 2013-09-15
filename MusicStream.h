@@ -55,7 +55,7 @@ private:
         ALenum _format;
 		int _playState;
 		//SpeexBits _bits;
-		void *_speexDecoderState; 
+		void *_speexDecoderState;
 		int _speexFrameSize;
 		int _fileFormat;
 		WavpackContext * _wavpackContext;
