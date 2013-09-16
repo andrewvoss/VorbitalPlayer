@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QMetaMethod>
 #include <QCloseEvent>
+#include <QDebug>
 
 #include "add.xpm"
 #include "folder.xpm"
@@ -41,7 +42,7 @@ VorbitalDlg::~VorbitalDlg()
  */
 VorbitalDlg::VorbitalDlg( )
 {
-    printf("Create.\n");
+    qDebug() << "VorbitalDlg Create.";
 	_done = false;
 	// OpenAL Initialization
 #ifdef WIN32
@@ -85,7 +86,7 @@ VorbitalDlg::VorbitalDlg( )
 	_txtTime = NULL;
     _volumeSlider = NULL;
     _timeElapsed = 0;
-    printf("Setting VorbitalDlg play state to STOPPED.\n");
+    qDebug() << "Setting VorbitalDlg play state to STOPPED.";
 	_playState = STOPPED;
 	_incrementNeeded = true;
     _randomize = false;
@@ -96,6 +97,11 @@ VorbitalDlg::VorbitalDlg( )
 	//_dropTarget = new VorbitalDropTarget(this);
 	//QWindow::SetDropTarget( _dropTarget );
     CreateControls();
+    // Register the meta type for saving and loading the playlist.
+    //qRegisterMetaType<QString>("QString");
+    //qRegisterMetaTypeStreamOperators<QString>("QString");
+    qRegisterMetaType<QList <QString> >("QList<QString>");
+    qRegisterMetaTypeStreamOperators<QList <QString> >("QList<QString>");
 	LoadSettings();
     QIcon icon("vorbital.ico");
     // TODO: Set the application icon.
@@ -107,8 +113,8 @@ VorbitalDlg::VorbitalDlg( )
 
 void VorbitalDlg::LoadSettings()
 {
-    printf("LoadSettings.\n");
 	QSettings* configData = new QSettings("Zeta Centauri", "Vorbital Player");
+    qDebug() << "LoadSettings loading file " << configData << ".";
 
 	// Randomizer setting.
 	_randomize = configData->value( "randomize" ).toInt();
@@ -146,13 +152,14 @@ void VorbitalDlg::LoadSettings()
         item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
         _lstPlaylist->addItem(item);
     }
-    printf("Loaded Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d, Playlist = %d items.\n", _randomize, volume, sizex, sizey, variantList.count());
+    qDebug() << "Loaded Settings: Randomize =" << _randomize << ", Volume =" << volume << ", Width =" << sizex <<
+        ", Height =" << sizey << ", Playlist =" << variantList.count() << " items.";
 	delete configData;
 }
 
 void VorbitalDlg::SaveSettings()
 {
-    printf("SaveSettings.\n");
+    qDebug() << "SaveSettings.";
 	QSettings* configData = new QSettings("Zeta Centauri", "Vorbital Player");
 	configData->setValue("randomize", _randomize);
 	configData->setValue("volume", _volumeSlider->value());
@@ -165,12 +172,13 @@ void VorbitalDlg::SaveSettings()
         QListWidgetItem* item = _lstPlaylist->item(i);
         QVariant variant = item->data(Qt::UserRole);
         QString filename = variant.toString();
-        printf("Saving Playlist Item: '%s'.\n", filename.toStdString().c_str());
+        qDebug() << "Saving Playlist Item: " << filename << "'.";
 		playlistItems << filename;
     }
     configData->setValue("playlist", QVariant::fromValue<QList <QString> >(playlistItems));
     configData->sync();
-    printf("Saved Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d, Playlist = %d items.\n", _randomize, _volumeSlider->value(), wsize.width(), wsize.height(), playlistItems.count());
+    qDebug() << "Saved Settings: Randomize =" << _randomize << ", Volume =" << _volumeSlider->value() <<
+        ", Width =" << wsize.width() << ", Height =" << wsize.height() << ", Playlist =" << playlistItems.count() << " items.";
 	delete configData;
 }
 
@@ -179,7 +187,7 @@ void VorbitalDlg::SaveSettings()
  */
 void VorbitalDlg::CreateControls()
 {
-    printf("CreateControls.\n");
+    qDebug() << "CreateControls.";
 	VorbitalDlg* itemDialog1 = this;
 
     QVBoxLayout* itemBoxSizer2 = new QVBoxLayout();
@@ -346,7 +354,7 @@ void VorbitalDlg::CreateControls()
 
 void VorbitalDlg::OnBitrate(int value)
 {
-  printf("Bitrate changed to %d.\n", value);
+  qDebug() << "Bitrate changed to " << value << ".";
   _txtBitRate->setText(QString("%1").arg(value));
 }
 
@@ -357,7 +365,7 @@ void VorbitalDlg::OnListPosition()
 
 void VorbitalDlg::OnNumChannels(int data)
 {
-  printf("Number of channels changed to %d.\n", data);
+  qDebug() << "Number of channels changed to " << data << ".";
   if( data == 1 )
   {
     _txtChannels->setText("Mono");
@@ -384,7 +392,7 @@ void VorbitalDlg::OnTime(int seconds)
 
 void VorbitalDlg::OnSampleRate(int data)
 {
-  printf("Samplerate changed to %d.\n", data);
+  qDebug() << "Samplerate changed to " << data << ".";
   _txtSampleRate->setText(QString("%1").arg(data));
 }
 
@@ -444,7 +452,7 @@ void VorbitalDlg::OnButtonBrowseFolderClick()
 {
 	QFileDialog fdialog( this, "Choose a directory", ".");
     QString dir = QFileDialog::getExistingDirectory(this, "Choose a directory", ".", QFileDialog::ShowDirsOnly);
-    printf("Directory: %s\n", dir.toStdString().c_str());
+    qDebug() << "Directory: " << dir << ".";
     QDir workingDirectory(dir);
     QStringList filters;
     filters << "*.wav" << "*.mp3" << "*.ogg" << "*.wv" << "*.snd" << "*.aif" << "*.aiff" /*<< "*.flac"*/;
@@ -467,8 +475,8 @@ void VorbitalDlg::OnButtonBrowseFolderClick()
 
 void VorbitalDlg::OnButtonStopClick()
 {
-    printf("Stop clicked.\n");
-    printf("Setting VorbitalDlg play state to STOPPED.\n");
+    qDebug() << "Stop clicked.";
+    qDebug() << "Setting VorbitalDlg play state to STOPPED.";
 	_playState = STOPPED;
 
 	if( _musicStream )
@@ -479,7 +487,7 @@ void VorbitalDlg::OnButtonStopClick()
 
 void VorbitalDlg::OnButtonPauseClick()
 {
-    printf("Pause clicked.\n");
+    qDebug() << "Pause clicked.";
 	if( _playState == PLAYING )
 	{
 		_musicStream->PausePlayback();
@@ -631,7 +639,7 @@ void VorbitalDlg::OnButtonClearClick()
 {
     _lstPlaylist->clear();
     _listPosition = 0;
-    printf("Setting VorbitalDlg play state to STOPPED.\n");
+    qDebug() << "Setting VorbitalDlg play state to STOPPED.";
     _playState = STOPPED;
     //OnButtonStopClick();
 }
@@ -659,10 +667,10 @@ void VorbitalDlg::OnPlaylistDoubleClick(QListWidgetItem*)
 	{
 		_musicStream->Stop();
 	}
-    printf("Setting VorbitalDlg play state to STOPPED.\n");
+    qDebug() << "Setting VorbitalDlg play state to STOPPED.";
 	_playState = STOPPED;
 	_listPosition = _lstPlaylist->currentRow();
-    printf("Setting playlist position to %d\n", _listPosition);
+    qDebug() << "Setting playlist position to " << _listPosition << ".";
 	OnButtonPlayClick();
 }
 
@@ -671,10 +679,10 @@ void VorbitalDlg::OnPlaylistDoubleClick(QListWidgetItem*)
  */
 void VorbitalDlg::OnButtonPlayClick()
 {
-    printf("Play clicked.\n");
+    qDebug() << "Play clicked.";
 	if( !_musicStream )
 	{
-        printf("Creating new MusicStream instance.\n");
+        qDebug() << "Creating new MusicStream instance.";
 		_musicStream = new MusicStream(this);
 		int volume = _volumeSlider->value();
 		float actualVol = (float)volume / 100.0f;
@@ -682,7 +690,7 @@ void VorbitalDlg::OnButtonPlayClick()
 		{
 			_musicStream->SetVolume( actualVol );
 		}
-        printf("Playing new MusicStream instance.\n");
+        qDebug() << "Playing new MusicStream instance.";
         _musicStream->start();
         _musicStream->Play();
 	}
@@ -697,7 +705,7 @@ void VorbitalDlg::OnButtonPlayClick()
         _timeElapsed = 0;
     }
 
-    printf("Setting VorbitalDlg play state to PLAYING.\n");
+    qDebug() << "Setting VorbitalDlg play state to PLAYING.";
 	_playState = PLAYING;
 }
 
@@ -713,7 +721,7 @@ void VorbitalDlg::OnQuit()
 #else
     usleep(50);
 #endif
-    printf("Closing OpenAL context and device.\n");
+    qDebug() << "Closing OpenAL context and device.";
     alcMakeContextCurrent(NULL);
     alcDestroyContext(_context);
     alcCloseDevice(_device);

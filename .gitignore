@@ -11,3 +11,8 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio Files
+*.suo
+*.user
+*.filters

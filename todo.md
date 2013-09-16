@@ -1,33 +1,15 @@
-NOTE: This file may no longer be accurate with the port to Qt for the interface.
-Re-check everything mentioned in this file.
-
 Still Needed for Qt Port:
 -------------------------
 - Verify that album art loading works
-- Verify that playlist advancing at the end of a song works properly.
-- Make sure that settings saving and loading works (playlist, dialog size, etc)
-- Make sure that all resources are released properly on exit.
+- Fix playlist save/load. Saving seems to work, but loading doesn't.
+- Allow dialog resizing after load (set min size vs set fixed size).
 - Fix control layout and button positioning/size.
+- Make right-click on playlist for file info work.
 
-Changes Made to Version 4:
-------------------------------------
-* Program will load album art if it exists as "Folder.jpg" in the same folder as the currently playing music file.
-* Added support for playing MP3 files.
-* Fixed a user interface bug that could cause the occasional crash on exit.
-* App now remembers the volume, window size, and randomize setting between runs.
-* Fixed a bug that could cause the first item in a playlist to play twice.
-* Fixed a bug that could cause a double-clicked item in a playlist to play twice.
-* Fixed a threading bug that could cause a crash on exit.
+NOTE: This section may no longer be accurate with the port to Qt for the interface.
+Re-check everything mentioned in this file.
 
-Changes Made in 3.11:
----------------------
-* Changed XPM files to be file includes instead of loaded at runtime.  Less chance of missing file glitches and simpler installer.
-* More space for things in user interface so 125% zoom level on Win7/Vista works.
-* Updated libraries
-* Display Vorbis, Ogg, and libsndfile versions in about box.
-
-
------------------------ TODO -------------------
+----------------------- FUTURE TODO -------------------
 *21)Fix pause when playing a track after playlist has been cleared.
 *24)Add FLAC support.  Right now it's partial but the library sucks and doesn't work.
 *27)Add wrench icon that lets users set interface colors.
