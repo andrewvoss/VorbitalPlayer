@@ -32,12 +32,6 @@
 #include "reverse.xpm"
 #include "stop.xpm"
 
-/* TODO: Create corresponding signals and slots.
-BEGIN_EVENT_TABLE( VorbitalDlg, QDialog )
-    EVT_SCROLL( VorbitalDlg::OnVolume )
-    EVT_COMMAND( wxID_ANY, EVT_LISTPOSITION, VorbitalDlg::OnListPosition )
-END_EVENT_TABLE()*/
-
 VorbitalDlg::~VorbitalDlg()
 {
 }
@@ -97,17 +91,16 @@ VorbitalDlg::VorbitalDlg( )
     _randomize = false;
 	_menuDoubleClicked = false;
 	srand((unsigned)time(0));
+    // TODO: Enable drag and drop.
     //SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
 	//_dropTarget = new VorbitalDropTarget(this);
 	//QWindow::SetDropTarget( _dropTarget );
     CreateControls();
 	LoadSettings();
     QIcon icon("vorbital.ico");
+    // TODO: Set the application icon.
 	//setIcon(icon);
 	// Start up the playlist thread.
-    // TODO: OK, so doing this hangs the app (presumably by replacing the GUI thread
-    // with running thread, so how do we run this detached?
-    // run();
     _playlistThread = new PlaylistThread(this);
 	_playlistThread->start();
 }
@@ -144,7 +137,16 @@ void VorbitalDlg::LoadSettings()
         setFixedWidth(sizex);
 		layout();
 	}
-    printf("Loaded Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d\n", _randomize, volume, sizex, sizey);
+    QVariantList variantList;
+    variantList = (configData->value( "playlist" )).toList();
+    foreach(QVariant v, variantList)
+    {
+        QFileInfo info(v.toString());
+        QListWidgetItem* item = new QListWidgetItem(info.baseName());
+        item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
+        _lstPlaylist->addItem(item);
+    }
+    printf("Loaded Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d, Playlist = %d items.\n", _randomize, volume, sizex, sizey, variantList.count());
 	delete configData;
 }
 
@@ -157,7 +159,18 @@ void VorbitalDlg::SaveSettings()
 	QSize wsize = size();
 	configData->setValue("sizex", wsize.width());
 	configData->setValue("sizey", wsize.height());
-    printf("Saved Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d\n", _randomize, _volumeSlider->value(), wsize.width(), wsize.height());
+    QList<QString> playlistItems;
+    for( int i = 0; i < _lstPlaylist->count(); i++ )
+    {
+        QListWidgetItem* item = _lstPlaylist->item(i);
+        QVariant variant = item->data(Qt::UserRole);
+        QString filename = variant.toString();
+        printf("Saving Playlist Item: '%s'.\n", filename.toStdString().c_str());
+		playlistItems << filename;
+    }
+    configData->setValue("playlist", QVariant::fromValue<QList <QString> >(playlistItems));
+    configData->sync();
+    printf("Saved Settings: Randomize = %d, Volume = %d, Width = %d, Height = %d, Playlist = %d items.\n", _randomize, _volumeSlider->value(), wsize.width(), wsize.height(), playlistItems.count());
 	delete configData;
 }
 
@@ -345,7 +358,6 @@ void VorbitalDlg::OnListPosition()
 void VorbitalDlg::OnNumChannels(int data)
 {
   printf("Number of channels changed to %d.\n", data);
-  //long data = event.GetExtraLong();
   if( data == 1 )
   {
     _txtChannels->setText("Mono");
@@ -358,8 +370,6 @@ void VorbitalDlg::OnNumChannels(int data)
 
 void VorbitalDlg::OnTime(int seconds)
 {
-  //printf("updating time: ");
-  //printf("formatting time: %d\n", seconds);
   QString label;
   if( (seconds % 60) > 9 )
   {
@@ -369,7 +379,6 @@ void VorbitalDlg::OnTime(int seconds)
   {
       label = QString("%1:0%2").arg(seconds / 60).arg(seconds % 60);
   }
-  //printf("%s\n", label.toStdString().c_str());
   _txtTime->setText(label);
 }
 
@@ -382,10 +391,10 @@ void VorbitalDlg::OnSampleRate(int data)
 /**
 * Handles right mouse clicks on the playlist.
 */
+// TODO: Reimplement this, and bind it to a right click signal.
 void VorbitalDlg::OnRightClick()
 {
-    // TODO: Get item clicked or X/Y coords to figure out what they clicked.
-	//int index = _lstPlaylist->itemAt(currentRow());
+	//int index = _lstPlaylist->itemAt(<< mouse position >>);
 	//if( index > -1 )
 	//{
 	//	ShowFileInfo(index);
@@ -397,7 +406,9 @@ void VorbitalDlg::OnRightClick()
 */
 void VorbitalDlg::ShowFileInfo(int index)
 {
-	QString filename = *((QString*)_lstPlaylist->item(index));
+    QListWidgetItem* item = _lstPlaylist->item(index);
+    QVariant variant = item->data(Qt::UserRole);
+    QString filename = variant.toString();
 	QMessageBox(QMessageBox::Information, filename, "File Location", QMessageBox::Ok);
 }
 
