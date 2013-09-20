@@ -80,6 +80,7 @@ void PlaylistThread::run()
                     _dlg->UpdateNumChannels(_dlg->GetMusicStream()->GetChannels() );
                     _dlg->UpdateBitrate(_dlg->GetMusicStream()->GetBitrate());
                     _dlg->UpdateSampleRate(_dlg->GetMusicStream()->GetRate());
+                    _dlg->LoadAlbumArt(filename);
 				}
                 else
                 {

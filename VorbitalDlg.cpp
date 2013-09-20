@@ -139,9 +139,8 @@ void VorbitalDlg::LoadSettings()
 	int sizey = (configData->value( "sizey" )).toInt();
 	if( sizex > 0 && sizey > 0 )
 	{
-        setFixedHeight(sizey);
-        setFixedWidth(sizex);
-		layout();
+        setFixedSize(sizex, sizey);
+        setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 	}
     QVariantList variantList;
     variantList = (configData->value( "playlist" )).toList();
@@ -810,9 +809,14 @@ QString VorbitalDlg::ExtractFilename(const QString& filename)
 
 void VorbitalDlg::LoadAlbumArt(const QString& filename)
 {
+#ifdef WIN32
 	int endPos = filename.lastIndexOf(QChar('\\'));
-	QString dirname = filename.mid(0, endPos);
+#else
+	int endPos = filename.lastIndexOf(QChar('/'));
+#endif
+	QString dirname = filename.mid(0, endPos+1);
 	QString artFile = QString("%1%2").arg(dirname).arg("Folder.jpg");
+    qDebug() << "Loading album art file: " << artFile;
     QFile file(artFile);
 	if( file.exists() )
 	{
@@ -822,14 +826,12 @@ void VorbitalDlg::LoadAlbumArt(const QString& filename)
 	        image = image.scaled(QSize(120, 120), Qt::KeepAspectRatio);
 		    _albumArt->setPixmap(image);
 		    _albumArt->setVisible(true);
-		    //Layout();
 		    //Refresh();
         }
 	}
 	else
 	{
 		_albumArt->setVisible(false);
-		//Layout();
 		//Refresh();
 	}
 }
