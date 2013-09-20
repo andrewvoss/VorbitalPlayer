@@ -102,8 +102,8 @@ VorbitalDlg::VorbitalDlg( )
     qRegisterMetaTypeStreamOperators<QList <QString> >("QList<QString>");
 	LoadSettings();
     QIcon icon("vorbital.ico");
-    // TODO: Set the application icon.
-	//setIcon(icon);
+	setWindowIcon(icon);
+    setWindowTitle("Vorbital Player");
 	// Start up the playlist thread.
     _playlistThread = new PlaylistThread(this);
 	_playlistThread->start();
