@@ -112,7 +112,7 @@ VorbitalDlg::VorbitalDlg( )
 void VorbitalDlg::LoadSettings()
 {
 	QSettings* configData = new QSettings("Zeta Centauri", "Vorbital Player");
-    qDebug() << "LoadSettings loading file " << configData << ".";
+    qDebug() << "LoadSettings loading file " << configData->fileName() << ".";
 
 	// Randomizer setting.
 	_randomize = configData->value( "randomize" ).toInt();
@@ -140,17 +140,20 @@ void VorbitalDlg::LoadSettings()
         setFixedSize(sizex, sizey);
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 	}
-    QVariantList variantList;
-    variantList = (configData->value( "playlist" )).toList();
-    foreach(QVariant v, variantList)
+    qDebug() << "Playlist: " << configData->value("playlist");
+    QList<QVariant> songList;
+    // This is what we want, but it throws a type conversion error.
+    //QList<QString> songList;
+    songList = (configData->value( "playlist" )).toList();
+    for( int i = 0; i < songList.count(); i++ )
     {
-        QFileInfo info(v.toString());
+        QFileInfo info(songList[i].toString());
         QListWidgetItem* item = new QListWidgetItem(info.baseName());
         item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
         _lstPlaylist->addItem(item);
     }
     qDebug() << "Loaded Settings: Randomize =" << _randomize << ", Volume =" << volume << ", Width =" << sizex <<
-        ", Height =" << sizey << ", Playlist =" << variantList.count() << " items.";
+        ", Height =" << sizey << ", Playlist =" << songList.count() << " items.";
 	delete configData;
 }
 
