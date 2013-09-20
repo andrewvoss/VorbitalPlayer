@@ -98,8 +98,6 @@ VorbitalDlg::VorbitalDlg( )
 	//QWindow::SetDropTarget( _dropTarget );
     CreateControls();
     // Register the meta type for saving and loading the playlist.
-    //qRegisterMetaType<QString>("QString");
-    //qRegisterMetaTypeStreamOperators<QString>("QString");
     qRegisterMetaType<QList <QString> >("QList<QString>");
     qRegisterMetaTypeStreamOperators<QList <QString> >("QList<QString>");
 	LoadSettings();
@@ -187,162 +185,137 @@ void VorbitalDlg::SaveSettings()
 void VorbitalDlg::CreateControls()
 {
     qDebug() << "CreateControls.";
-	VorbitalDlg* itemDialog1 = this;
 
-    QVBoxLayout* itemBoxSizer2 = new QVBoxLayout();
-    itemDialog1->setLayout(itemBoxSizer2);
+    QVBoxLayout* rootLayout = new QVBoxLayout();
+    setLayout(rootLayout);
 
-    QHBoxLayout* itemBoxSizer3 = new QHBoxLayout();
-    itemBoxSizer2->addLayout(itemBoxSizer3);
+    QHBoxLayout* firstRowLayout = new QHBoxLayout();
+    rootLayout->addLayout(firstRowLayout);
 
-    itemBoxSizer3->insertSpacing(2, 2);
+    firstRowLayout->setContentsMargins(QMargins(0,0,0,0));
+    firstRowLayout->setSpacing(2);
 
-	_btnBrowse = new QPushButton( itemDialog1 );
+	_btnBrowse = new QPushButton( this );
     _btnBrowse->setIcon(QPixmap(add_xpm));
 	_btnBrowse->setToolTip("Add file to playlist.");
     connect(_btnBrowse, SIGNAL(released()), this, SLOT(OnButtonBrowseClick()));
-    itemBoxSizer3->addWidget(_btnBrowse);
+    firstRowLayout->addWidget(_btnBrowse);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-    _btnBrowseFolder = new QPushButton( itemDialog1 );
+    _btnBrowseFolder = new QPushButton( this );
     _btnBrowseFolder->setIcon(QPixmap(folder_xpm));
 	_btnBrowseFolder->setToolTip("Add folder to playlist.");
     connect(_btnBrowseFolder, SIGNAL(released()), this, SLOT(OnButtonBrowseFolderClick()));
-    itemBoxSizer3->addWidget(_btnBrowseFolder);
+    firstRowLayout->addWidget(_btnBrowseFolder);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-    _btnRemove = new QPushButton( itemDialog1 );
+    _btnRemove = new QPushButton( this );
     _btnRemove->setIcon(QPixmap(remove_xpm));
 	_btnRemove->setToolTip("Remove selected item from playlist.");
     connect(_btnRemove, SIGNAL(released()), this, SLOT(OnButtonRemoveClick()));
-    itemBoxSizer3->addWidget(_btnRemove);
+    firstRowLayout->addWidget(_btnRemove);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-    _btnClear = new QPushButton( itemDialog1 );
+    _btnClear = new QPushButton( this );
     _btnClear->setIcon(QPixmap(null_xpm));
 	_btnClear->setToolTip("Clear playlist.");
     connect(_btnClear, SIGNAL(released()), this, SLOT(OnButtonClearClick()));
-    itemBoxSizer3->addWidget(_btnClear);
+    firstRowLayout->addWidget(_btnClear);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-	_btnReverse = new QPushButton( itemDialog1 );
+	_btnReverse = new QPushButton( this );
     _btnReverse->setIcon(QPixmap(reverse_xpm));
 	_btnReverse->setToolTip("Previous track.");
     connect(_btnReverse, SIGNAL(released()), this, SLOT(OnButtonReverseClick()));
-    itemBoxSizer3->addWidget(_btnReverse);
+    firstRowLayout->addWidget(_btnReverse);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-	_btnPause = new QPushButton( itemDialog1 );
+	_btnPause = new QPushButton( this );
     _btnPause->setIcon(QPixmap(pause_xpm));
 	_btnPause->setToolTip("Pause.");
     connect(_btnPause, SIGNAL(released()), this, SLOT(OnButtonPauseClick()));
-    itemBoxSizer3->addWidget(_btnPause);
+    firstRowLayout->addWidget(_btnPause);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-	_btnStop = new QPushButton( itemDialog1 );
+	_btnStop = new QPushButton( this );
     _btnStop->setIcon(QPixmap(stop_xpm));
 	_btnStop->setToolTip("Stop.");
     connect(_btnStop, SIGNAL(released()), this, SLOT(OnButtonStopClick()));
-    itemBoxSizer3->addWidget(_btnStop);
+    firstRowLayout->addWidget(_btnStop);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-	_btnPlay = new QPushButton( itemDialog1 );
+	_btnPlay = new QPushButton( this );
     _btnPlay->setIcon(QPixmap(play_xpm));
 	_btnPlay->setToolTip("Play.");
     connect(_btnPlay, SIGNAL(released()), this, SLOT(OnButtonPlayClick()));
-    itemBoxSizer3->addWidget(_btnPlay);
+    firstRowLayout->addWidget(_btnPlay);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-    _btnForward = new QPushButton( itemDialog1 );
+    _btnForward = new QPushButton( this );
     _btnForward->setIcon(QPixmap(forward_xpm));
 	_btnForward->setToolTip("Next track.");
     connect(_btnForward, SIGNAL(released()), this, SLOT(OnButtonForwardClick()));
-    itemBoxSizer3->addWidget(_btnForward);
+    firstRowLayout->addWidget(_btnForward);
 
-    itemBoxSizer3->insertSpacing(6, 6);
-
-    _btnRandomize = new QPushButton( itemDialog1 );
+    _btnRandomize = new QPushButton( this );
     _btnRandomize->setIcon(QPixmap(normal_xpm));
 	_btnRandomize->setToolTip("Turn shuffle on or off.");
     connect(_btnRandomize, SIGNAL(released()), this, SLOT(OnButtonRandomizeClick()));
-    itemBoxSizer3->addWidget(_btnRandomize);
+    firstRowLayout->addWidget(_btnRandomize);
 
-	itemBoxSizer3->insertSpacing(6, 6);
-
-	_btnAbout = new QPushButton( itemDialog1 );
+	_btnAbout = new QPushButton( this );
     _btnAbout->setIcon(QPixmap(question_xpm));
 	_btnAbout->setToolTip("About Vorbital Player");
     connect(_btnAbout, SIGNAL(released()), this, SLOT(OnAbout()));
-    itemBoxSizer3->addWidget(_btnAbout);
+    firstRowLayout->addWidget(_btnAbout);
 
-    itemBoxSizer3->insertSpacing(6, 6);
+    QHBoxLayout* secondRowLayout = new QHBoxLayout();
+    rootLayout->addLayout(secondRowLayout);
 
-    QHBoxLayout* itemBoxSizer15 = new QHBoxLayout();
-    itemBoxSizer2->addLayout(itemBoxSizer15);
+    secondRowLayout->insertSpacing(6, 6);
 
-    itemBoxSizer15->insertSpacing(6, 6);
-
-	QLabel* itemStaticText16 = new QLabel(itemDialog1);
+	QLabel* itemStaticText16 = new QLabel(this);
     itemStaticText16->setText("SR:");
 	itemStaticText16->setToolTip("Sample rate.");
-    itemBoxSizer15->addWidget(itemStaticText16);
+    secondRowLayout->addWidget(itemStaticText16);
 
-    _txtSampleRate = new QLabel(itemDialog1);
+    _txtSampleRate = new QLabel(this);
     _txtSampleRate->setText("0");
-    itemBoxSizer15->addWidget(_txtSampleRate);
+    secondRowLayout->addWidget(_txtSampleRate);
 
-	itemBoxSizer15->insertSpacing(4, 4);
+	secondRowLayout->insertSpacing(4, 4);
 
-	QLabel* itemStaticText20 = new QLabel(itemDialog1);
+	QLabel* itemStaticText20 = new QLabel(this);
     itemStaticText20->setText("BR:");
 	itemStaticText20->setToolTip("Bit rate.");
-    itemBoxSizer15->addWidget(itemStaticText20);
+    secondRowLayout->addWidget(itemStaticText20);
 
-    _txtBitRate = new QLabel(itemDialog1);
+    _txtBitRate = new QLabel(this);
     _txtBitRate->setText("0");
-    itemBoxSizer15->addWidget(_txtBitRate);
+    secondRowLayout->addWidget(_txtBitRate);
 
-    itemBoxSizer15->insertSpacing(4, 4);
+    secondRowLayout->insertSpacing(4, 4);
 
-    _txtChannels = new QLabel(itemDialog1);
+    _txtChannels = new QLabel(this);
     _txtChannels->setText("Stereo");
-    itemBoxSizer15->addWidget(_txtChannels);
+    secondRowLayout->addWidget(_txtChannels);
 
-	itemBoxSizer15->insertSpacing(10, 10);
+	secondRowLayout->insertSpacing(10, 10);
 
-    _volumeSlider = new QSlider(Qt::Horizontal, itemDialog1);
+    _volumeSlider = new QSlider(Qt::Horizontal, this);
     _volumeSlider->setMinimum(0);
     _volumeSlider->setMaximum(100);
     _volumeSlider->setValue(0);
     _volumeSlider->setMaximumSize(100, 24);
     connect(_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(OnVolume(int)));
-    itemBoxSizer15->addWidget(_volumeSlider);
+    secondRowLayout->addWidget(_volumeSlider);
 
-	itemBoxSizer15->insertSpacing(10, 10);
+	secondRowLayout->insertSpacing(10, 10);
 
-	_txtTime = new QLabel(itemDialog1);
+	_txtTime = new QLabel(this);
     _txtTime->setText("0:00");
-    itemBoxSizer15->addWidget(_txtTime);
+    secondRowLayout->addWidget(_txtTime);
 
 	QBitmap* bitmap = new QBitmap(120, 120);
-	_albumArt = new QLabel(itemDialog1);
+	_albumArt = new QLabel(this);
     _albumArt->setPixmap(*bitmap);
-	itemBoxSizer2->addWidget(_albumArt);
+	rootLayout->addWidget(_albumArt);
 	_albumArt->setVisible(false);
 
-	QHBoxLayout* itemBoxSizer35 = new QHBoxLayout();
-    itemBoxSizer2->addLayout(itemBoxSizer35);
-
-	_lstPlaylist = new QListWidget( itemDialog1 );
-	itemBoxSizer35->addWidget(_lstPlaylist);
+	_lstPlaylist = new QListWidget( this );
+	rootLayout->addWidget(_lstPlaylist);
 	connect(_lstPlaylist, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnPlaylistDoubleClick(QListWidgetItem*)), Qt::AutoConnection);
 
     connect(this, SIGNAL(bitrateChanged(int)), this, SLOT(OnBitrate(int)), Qt::AutoConnection);
