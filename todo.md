@@ -3,6 +3,8 @@ Still Needed for Qt Port:
 - Make right-click on playlist for file info work. Best if this also shows some basic
   file details, where appropriate (metadata - bitrate, artist, album, track number, track
   name, modified date, etc.)
+- Support AlbumArtSmall.jpg in addition to Folder.jpg for album art.
+- Disable all qDebug statements.
 
 NOTE: This section may no longer be accurate with the port to Qt for the interface.
 Re-check everything mentioned in this file.
