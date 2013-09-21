@@ -704,7 +704,11 @@ void VorbitalDlg::OnQuit()
 */
 void VorbitalDlg::OnAbout()
 {
-    QMessageBox::about(this, "Vorbital Player 4.0", "Vorbital Player 4.0\nCopyright 2006-2013 Zeta Centauri\nDeveloped by Jason Champion\nThe Vorbital Player is free software and may be distributed freely.\nhttp://vorbitalplayer.com?version=4.0\nhttp://vorbitalplayer.com\nVorbital uses the libogg 1.3.0, libvorbis 1.3.3, wavpack 4.60.1,\nmpg123 1.14.2, and libsndfile 1.0.25 libraries.");
+#ifdef WIN32
+    QMessageBox::about(this, "Vorbital Player 4.0", "Vorbital Player 4.0\nCopyright 2006-2013 Zeta Centauri.\nDeveloped by Jason Champion.\nThe Vorbital Player is free software and may be distributed freely.\nhttp://vorbitalplayer.com\nVorbital uses the libogg 1.3.0, libvorbis 1.3.3, wavpack 4.60.1, mpg123 1.14.2, and libsndfile 1.0.25 libraries.");
+#else
+    QMessageBox::about(this, "Vorbital Player 4.0", "Vorbital Player 4.0\nCopyright 2006-2013 Zeta Centauri.\nDeveloped by Jason Champion.\nThe Vorbital Player is free software and may be distributed freely.\nhttp://vorbitalplayer.com\nVorbital uses the libogg, libvorbis, wavpack, mpg123, and libsndfile libraries.");
+#endif
 }
 
 /**

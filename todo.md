@@ -1,10 +1,8 @@
 Still Needed for Qt Port:
 -------------------------
-- Verify that album art loading works
-- Fix playlist save/load. Saving seems to work, but loading doesn't.
-- Allow dialog resizing after load (set min size vs set fixed size).
-- Fix control layout and button positioning/size.
-- Make right-click on playlist for file info work.
+- Make right-click on playlist for file info work. Best if this also shows some basic
+  file details, where appropriate (metadata - bitrate, artist, album, track number, track
+  name, modified date, etc.)
 
 NOTE: This section may no longer be accurate with the port to Qt for the interface.
 Re-check everything mentioned in this file.
