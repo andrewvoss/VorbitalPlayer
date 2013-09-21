@@ -7,7 +7,6 @@ TARGET = Vorbital
 INCLUDEPATH += /usr/include/qt5/QtWidgets/
 QT += core gui widgets
 LIBS += -lwavpack -lvorbisfile -lvorbis -lsndfile -lmpg123 -lopenal
-QMAKE_CXXFLAGS += -g -ggdb
 
 # Input
 HEADERS += AudioFileFormat.h \

@@ -138,6 +138,10 @@ void VorbitalDlg::LoadSettings()
     QStringList songList = songs.split(";");
     for( int i = 0; i < songList.count(); i++ )
     {
+        if( songList[i].length() < 2 )
+        {
+            continue;
+        }
         QFileInfo info(songList[i]);
         QListWidgetItem* item = new QListWidgetItem(info.baseName());
         item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
@@ -257,7 +261,7 @@ void VorbitalDlg::CreateControls()
 
 	_btnAbout = new QPushButton( this );
     _btnAbout->setIcon(QPixmap(question_xpm));
-	_btnAbout->setToolTip("About Vorbital Player");
+	_btnAbout->setToolTip("About Vorbital Player.");
     connect(_btnAbout, SIGNAL(released()), this, SLOT(OnAbout()));
     firstRowLayout->addWidget(_btnAbout);
 
@@ -297,7 +301,7 @@ void VorbitalDlg::CreateControls()
     _volumeSlider = new QSlider(Qt::Horizontal, this);
     _volumeSlider->setMinimum(0);
     _volumeSlider->setMaximum(100);
-    _volumeSlider->setValue(0);
+    _volumeSlider->setValue(100);
     _volumeSlider->setMaximumSize(100, 24);
     connect(_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(OnVolume(int)));
     secondRowLayout->addWidget(_volumeSlider);
