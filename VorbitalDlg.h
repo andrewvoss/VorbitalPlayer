@@ -14,36 +14,13 @@
 #include <QListWidget>
 #include <QDateTime>
 
-#define SYMBOL_VorbitalDlg_TITLE _("Vorbital Player")
-#define SYMBOL_VorbitalDlg_SIZE QSize(480, 400)
-
-class VorbitalDlg;
-
-// TODO:
-// setAcceptDrops(true)
-// dropEvent(QDropEvent* event);
-// dragEnterEvent(QDragEnterEvent* event);
-// etc, see here:
-// http://qt-project.org/doc/qt-4.8/dnd.html
-
-/*class VorbitalDropTarget: public QFileDropTarget
-{
-public:
-	VorbitalDropTarget( VorbitalDlg* dialog ) { _dialog = dialog; }
-	virtual ~VorbitalDropTarget() {}
-	//virtual bool OnDropFiles(QCoord x, QCoord y, const QArrayString& filenames);
-private:
-	VorbitalDlg* _dialog;
-};*/
-
-class VorbitalDlg: public QDialog/*, public QThread*/
+class VorbitalDlg: public QDialog
 {
     Q_OBJECT
 public:
     VorbitalDlg( );
     ~VorbitalDlg( );
     void CreateControls();
-    //bool OnDropFiles( const QArrayString& filename );
     void LoadFile( QString& filename );
     void OnMouseWheel();
     void OnListPosition();
@@ -71,6 +48,8 @@ public:
     void UpdateBitrate(int bitrate);
     void UpdateSampleRate(int samplerate);
     void closeEvent(QCloseEvent* event);
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
 public slots:
     void OnPlaylistDoubleClick(QListWidgetItem* item);
     void OnNumChannels(int value);

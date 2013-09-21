@@ -18,6 +18,7 @@
 #include <QMetaMethod>
 #include <QCloseEvent>
 #include <QDebug>
+#include <QMimeData>
 
 #include "add.xpm"
 #include "folder.xpm"
@@ -92,10 +93,6 @@ VorbitalDlg::VorbitalDlg( )
     _randomize = false;
 	_menuDoubleClicked = false;
 	srand((unsigned)time(0));
-    // TODO: Enable drag and drop.
-    //SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
-	//_dropTarget = new VorbitalDropTarget(this);
-	//QWindow::SetDropTarget( _dropTarget );
     CreateControls();
 	LoadSettings();
     QIcon icon("vorbital.ico");
@@ -137,7 +134,6 @@ void VorbitalDlg::LoadSettings()
         setFixedSize(sizex, sizey);
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 	}
-    qDebug() << "Playlist: " << configData->value("playlist");
     QString songs = configData->value("playlist").toString();
     QStringList songList = songs.split(";");
     for( int i = 0; i < songList.count(); i++ )
@@ -188,6 +184,7 @@ void VorbitalDlg::SaveSettings()
 void VorbitalDlg::CreateControls()
 {
     qDebug() << "CreateControls.";
+    setAcceptDrops(true);
 
     QVBoxLayout* rootLayout = new QVBoxLayout();
     setLayout(rootLayout);
@@ -710,40 +707,38 @@ void VorbitalDlg::OnAbout()
     QMessageBox::about(this, "Vorbital Player 4.0", "Vorbital Player 4.0\nCopyright 2006-2013 Zeta Centauri\nDeveloped by Jason Champion\nThe Vorbital Player is free software and may be distributed freely.\nhttp://vorbitalplayer.com?version=4.0\nhttp://vorbitalplayer.com\nVorbital uses the libogg 1.3.0, libvorbis 1.3.3, wavpack 4.60.1,\nmpg123 1.14.2, and libsndfile 1.0.25 libraries.");
 }
 
-/*
-* Handles drag and drop.
+/**
+* Drag and drop receiver.
 */
-/*
-bool VorbitalDlg::OnDropFiles(const QArrayString& filenames)
+void VorbitalDlg::dropEvent(QDropEvent *event)
 {
-	if( filenames.GetCount() > 0 )
-	{
-		for( unsigned int i = 0; i < filenames.Count(); i++ )
-		{
-			_lstPlaylist->addItem( ExtractFilename(filenames[i]), new QString(filenames[i]) );
-		}
-	}
-
-	if( _lstPlaylist->currentRow() < 0 )
-	{
-		_lstPlaylist->setCurrentRow(0);
-		_listPosition = 0;
-	}
-
-	return true;
+    const QMimeData* mimeData = event->mimeData();
+    QString filenames = mimeData->text();
+    if( mimeData->hasUrls() )
+    {
+        qDebug() << "MIME data has URLs from drop action.";
+        QList<QUrl> urlList = mimeData->urls();
+        // extract the local paths of the files
+        for (int i = 0; i < urlList.size() && i < 32; ++i)
+        {
+            QFileInfo info(urlList[i].toLocalFile());
+            QListWidgetItem* item = new QListWidgetItem(info.baseName());
+            item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
+            qDebug() << "Adding to playlist: " << urlList[i];
+            _lstPlaylist->addItem(item);
+        }
+    }
+    qDebug() << "Files dropped: " << filenames;
+    event->acceptProposedAction();
 }
 
-bool VorbitalDropTarget::OnDropFiles(QCoord x, QCoord y, const QArrayString& filenames)
+void VorbitalDlg::dragEnterEvent(QDragEnterEvent *event)
 {
-	if( filenames.GetCount() < 1 || !_dialog )
-	{
-		return false;
-	}
-	_dialog->OnDropFiles( filenames );
-
-	return true;
+    if (event->mimeData()->hasFormat("text/plain"))
+    {
+        event->acceptProposedAction();
+    }
 }
-*/
 
 void VorbitalDlg::LoadFile( QString& filename )
 {
