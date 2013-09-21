@@ -22,17 +22,6 @@ bool FileFormatVorbis::CheckExtension(QString& filename)
 
 bool FileFormatVorbis::Open(QString& filename)
 {
-	//	_musicFile = fopen( file.mb_str(), "rb" );
-
-	//	if( !_musicFile )
-	//	{
-	//#ifdef WIN32
-	//		//MessageBox( NULL, "Unable to open ogg file", "ERROR", MB_OK );
-	//#endif
-	//		return false;
-	//	}
-	//result = ov_open_callbacks(_musicFile, &_oggVorbisFile, 0, 0);
-	//result = ov_open(_musicFile, &_oggVorbisFile, NULL, 0);
 	int result = ov_fopen(filename.toStdString().c_str(), _oggVorbisFile);
 
 	if( result < 0)
@@ -107,7 +96,6 @@ int FileFormatVorbis::FillBuffer(unsigned char* buffer, int numBytes)
 
     if(numDone == 0)
     {
-		//MessageBox( NULL, "Size 0 error", "ERR", MB_OK );
         return false;
     }
 
@@ -143,27 +131,3 @@ const char * FileFormatVorbis::VorbisErrorString(int code)
             return "Unknown Ogg error.";
     }
 }
-
-//void MusicStream::Display()
-//{
-//    cout
-//        << "version         " << _vorbisInfo->version         << "\n"
-//        << "channels        " << _vorbisInfo->channels        << "\n"
-//        << "rate (hz)       " << _vorbisInfo->rate            << "\n"
-//        << "bitrate upper   " << _vorbisInfo->bitrate_upper   << "\n"
-//        << "bitrate nominal " << _vorbisInfo->bitrate_nominal << "\n"
-//        << "bitrate lower   " << _vorbisInfo->bitrate_lower   << "\n"
-//        << "bitrate window  " << _vorbisInfo->bitrate_window  << "\n"
-//        << "\n"
-//        << "vendor " << _vorbisComment->vendor << "\n";
-//        
-//    for(int i = 0; i < _vorbisComment->comments; i++)
-//        cout << "   " << _vorbisComment->user_comments[i] << "\n";
-//        
-//    cout << endl;
-//}
-
-//int MusicStream::GetVersion()
-//{
-//	return _vorbisInfo->version;
-//}

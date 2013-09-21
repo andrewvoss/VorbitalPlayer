@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _WAVEFILE_H_
+#define _WAVEFILE_H_
 
 #include "sndfile.h"
 #ifdef WIN32
@@ -44,3 +45,5 @@ private:
 	unsigned short _bitsPerSample;
     unsigned short _blockAlign;
 };
+
+#endif

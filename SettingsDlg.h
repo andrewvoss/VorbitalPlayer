@@ -5,9 +5,6 @@
 #include <QPushButton>
 #include <QIcon>
 
-#define SYMBOL_SETTINGSDLG_TITLE _("Vorbital Player Settings")
-#define SYMBOL_SETTINGSDLG_SIZE QSize(480, 320)
-
 class SettingsDlg : public QDialog
 {
 public:

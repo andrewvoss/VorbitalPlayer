@@ -1,4 +1,3 @@
-//#define BUFFER_SIZE (8192 * 8)
 #define BUFFER_SIZE 32768
 
 #define PLAYING 1

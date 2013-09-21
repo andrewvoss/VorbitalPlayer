@@ -3,6 +3,7 @@
 #include "FileFormatVorbis.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 MusicStream::MusicStream(QDialog* parent)
 {
@@ -15,7 +16,7 @@ MusicStream::MusicStream(QDialog* parent)
 	_buffers[0] = 0;
 	_buffers[1] = 0;
 	_format = 0;
-    printf("Setting MusicStream play state to STOPPED.\n");
+    qDebug() << "Setting MusicStream play state to STOPPED.";
 	_playState = STOPPED;
 	FileFormatVorbis::Init();
 	FileFormatMP3::Init();
@@ -30,8 +31,7 @@ MusicStream::~MusicStream()
 
 bool MusicStream::Open(QString file)
 {
-    printf("Loading file: %s\n", file.toStdString().c_str());
-    //int result = 0;
+    qDebug() << "Loading file: " << file;
 
 	//else if( file.Contains(".spx"))
 /*	{
@@ -361,13 +361,13 @@ bool MusicStream::PausePlayback()
 {
     if( _playState != PAUSED )
     {
-        printf("Setting MusicStream play state to PAUSED.\n");
+        qDebug() << "Setting MusicStream play state to PAUSED.";
 	    _playState = PAUSED;
         alSourcePause( _source );
     }
     else if( _playState == PAUSED )
     {
-        printf("Setting MusicStream play state to PLAYING.\n");
+        qDebug() << "Setting MusicStream play state to PLAYING.";
         _playState = PLAYING;
         alSourcePlay( _source );
     }
@@ -500,7 +500,7 @@ void MusicStream::Check()
 
 	if(error != AL_NO_ERROR)
 	{
-		//MessageBox( NULL, "OpenAL error was raised", "ERROR", MB_OK );
+		qDebug() << "OpenAL error was raised: " << error;
 	}
 }
 
@@ -510,7 +510,7 @@ int MusicStream::Play()
     {
         alSourcePlay( _source );
     }
-    printf("Setting MusicStream play state to PLAYING.\n");
+    qDebug() << "Setting MusicStream play state to PLAYING.";
 	_playState = PLAYING;
 
 	return 0;
@@ -522,7 +522,7 @@ int MusicStream::PlayFile(QString file)
 	{
 		return -1;
 	}
-    printf("Setting MusicStream play state to PLAYING.\n");
+    qDebug() << "Setting MusicStream play state to PLAYING.";
 	_playState = PLAYING;
 
 	return 0;
@@ -530,13 +530,13 @@ int MusicStream::PlayFile(QString file)
 
 void MusicStream::Stop()
 {
-    printf("Setting MusicStream play state to STOPPED.\n");
+    qDebug() << "Setting MusicStream play state to STOPPED.";
 	_playState = STOPPED;
 }
 
 void MusicStream::run()
 {
-    printf("Music playback thread started.\n");
+    qDebug() << "Music playback thread started.";
 	while( 1 )
 	{
 		if( !(_playState == PLAYING) )
@@ -578,11 +578,11 @@ void MusicStream::run()
                 usleep(1000);
 #endif
 			}
-            printf("Setting MusicStream play state to STOPPED.\n");
+            qDebug() << "Setting MusicStream play state to STOPPED.";
 			_playState = STOPPED;
 		}
 	}
-    printf("Music playback thread exiting.\n");
+    qDebug() << "Music playback thread exiting.";
 	return;
 }
 
@@ -603,7 +603,7 @@ ALuint MusicStream::GetOpenALFormatFromFile(WaveFile* file)
 	// TODO: FIXME
 	// Note: Any 32-bit .wav file that is loaded passes through this function
 	// and is assigned a 16-bit OpenAL format and sounds terrible when played.
-	// We need to take action to fix this.
+	// We need to fix this.
 
 	if( channels == 1 )
 	{

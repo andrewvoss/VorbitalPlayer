@@ -30,7 +30,6 @@ bool SettingsDlg::Create( QDialog* parent )
 {
     _btnOk = NULL;
 	_btnCancel = NULL;
-    //QDialog::Create( parent, id, caption, pos, size, style );
     CreateControls();
     _icon = new QIcon("vorbital.ico");
     setWindowIcon(*_icon);

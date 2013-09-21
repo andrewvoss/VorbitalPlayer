@@ -24,7 +24,6 @@ public:
 	virtual int GetSampleRate() = 0;
 	virtual int FillBuffer(unsigned char* buffer, int numBytes) = 0;
 	static bool Init();
-//private:
 };
 
 #endif

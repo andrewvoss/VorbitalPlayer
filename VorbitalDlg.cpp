@@ -23,6 +23,7 @@
 #include "add.xpm"
 #include "folder.xpm"
 #include "forward.xpm"
+// For the settings dialog.
 //#include "gear.xpm"
 #include "normal.xpm"
 #include "null.xpm"
@@ -126,7 +127,7 @@ void VorbitalDlg::LoadSettings()
 	{
 		_musicStream->SetVolume( actualVol );
 	}
-	// Window size.  Default size is 386x360 if it hasn't been changed.
+	// Window size.
 	int sizex = (configData->value( "sizex" )).toInt();
 	int sizey = (configData->value( "sizey" )).toInt();
 	if( sizex > 0 && sizey > 0 )
@@ -134,6 +135,7 @@ void VorbitalDlg::LoadSettings()
         setFixedSize(sizex, sizey);
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 	}
+    // Previous playlist.
     QString songs = configData->value("playlist").toString();
     QStringList songList = songs.split(";");
     for( int i = 0; i < songList.count(); i++ )
@@ -376,6 +378,7 @@ void VorbitalDlg::OnSampleRate(int data)
 * Handles right mouse clicks on the playlist.
 */
 // TODO: Reimplement this, and bind it to a right click signal.
+// This could be used to show an ID3 tag editor.
 void VorbitalDlg::OnRightClick()
 {
 	//int index = _lstPlaylist->itemAt(<< mouse position >>);
@@ -405,7 +408,6 @@ void VorbitalDlg::OnButtonBrowseClick()
 {
 	QStringList filenames = QFileDialog::getOpenFileNames( this, "Choose a file", ".",
 		"Supported Files (*.aif *.aiff *.mp3 *.ogg *.snd *.wav *.wv)" );
-//		"Supported Files (*.aif, *.aiff, *.mp3, *.ogg, *.snd, *.wav, *.wv) |*.aif;*.AIF;*.aiff;*.AIFF;*.mp3;*.MP3;*.ogg;*.OGG;*.snd;*.SND;*.wv;*.WV;*.wav;*.WAV|AIFF Files (*.aif, *.aiff) |*.aif;*.AIF;*.aiff;*.AIFF|MP3 Files (*.mp3) |*.mp3;*.MP3|Ogg Vorbis Files (*.ogg) |*.ogg;*.OGG|SND Files (*.snd) |*.snd;*.SND|Wave Files (*.wav) |*.wav;*.WAV|Wavpack Files (*.wv) |*.wv;*.WV||" );
 
 	for( int i = 0; i < filenames.length(); i++ )
 	{
@@ -420,8 +422,6 @@ void VorbitalDlg::OnButtonBrowseClick()
 		_lstPlaylist->setCurrentRow(0);
 		_listPosition = 0;
 	}
-
-	// Update the file metrics display once the file is loaded.
 }
 
 void VorbitalDlg::OnButtonBrowseFolderClick()
@@ -445,8 +445,6 @@ void VorbitalDlg::OnButtonBrowseFolderClick()
 		_lstPlaylist->setCurrentRow(0);
 		_listPosition = 0;
 	}
-
-	// Update the file metrics display once the file is loaded.
 }
 
 void VorbitalDlg::OnButtonStopClick()
@@ -565,18 +563,16 @@ void VorbitalDlg::OnButtonRandomizeClick()
 	_randomize = !_randomize;
 	if( _randomize )
 	{
-        //bmpRandom.SetMask(new QMask(bmpRandom, *wxWHITE));
 		_btnRandomize->setIcon( QPixmap(random_xpm) );
 	}
 	else
 	{
-        //bmpNormal.SetMask(new QMask(bmpNormal, *wxWHITE));
 		_btnRandomize->setIcon( QPixmap(normal_xpm) );
 	}
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_REMOVE
+ * Remove from playlist butto handler.
  */
 void VorbitalDlg::OnButtonRemoveClick()
 {
@@ -617,28 +613,11 @@ void VorbitalDlg::OnButtonClearClick()
     _listPosition = 0;
     qDebug() << "Setting VorbitalDlg play state to STOPPED.";
     _playState = STOPPED;
-    //OnButtonStopClick();
 }
 
 void VorbitalDlg::OnPlaylistDoubleClick(QListWidgetItem*)
 {
-	// Identical to clicking play, but at the specified position.
-	//
-	// The first time the playlist needs to advance from a double-click, it plays the
-	// initially double-clicked track over again.  The commented code almost worked,
-	// except that it broke double-click after a song had been playing and the playlist
-	// had advanced.
-	//
-	// Clearly there are deeper problems with playlist advancing.
-	//if(_menuDoubleClicked)
-	//{
-		_incrementNeeded = false;
-	//}
-	//else
-	//{
-	//	_incrementNeeded = true;
-	//	_menuDoubleClicked = true;
-	//}
+    _incrementNeeded = false;
 	if( _musicStream )
 	{
 		_musicStream->Stop();
@@ -651,7 +630,7 @@ void VorbitalDlg::OnPlaylistDoubleClick(QListWidgetItem*)
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_PLAY
+ * Play button handler.
  */
 void VorbitalDlg::OnButtonPlayClick()
 {
@@ -686,7 +665,7 @@ void VorbitalDlg::OnButtonPlayClick()
 }
 
 /**
- @brief  EVT_QUIT handler.
+* Quit handler.
 */
 void VorbitalDlg::OnQuit()
 {
@@ -726,7 +705,6 @@ void VorbitalDlg::dropEvent(QDropEvent *event)
     {
         qDebug() << "MIME data has URLs from drop action.";
         QList<QUrl> urlList = mimeData->urls();
-        // extract the local paths of the files
         for (int i = 0; i < urlList.size() && i < 32; ++i)
         {
             QFileInfo info(urlList[i].toLocalFile());
@@ -766,7 +744,6 @@ void VorbitalDlg::OnVolume(int volume)
     if( _musicStream )
     {
         float actualVol = (float)volume / 100.0f;
-        //cout << "Setting volume to " << actualVol << endl;
         _musicStream->SetVolume( actualVol );
     }
 }
@@ -805,13 +782,11 @@ void VorbitalDlg::LoadAlbumArt(const QString& filename)
 	        image = image.scaled(QSize(120, 120), Qt::KeepAspectRatio);
 		    _albumArt->setPixmap(image);
 		    _albumArt->setVisible(true);
-		    //Refresh();
         }
 	}
 	else
 	{
 		_albumArt->setVisible(false);
-		//Refresh();
 	}
 }
 
