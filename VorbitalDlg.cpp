@@ -97,9 +97,6 @@ VorbitalDlg::VorbitalDlg( )
 	//_dropTarget = new VorbitalDropTarget(this);
 	//QWindow::SetDropTarget( _dropTarget );
     CreateControls();
-    // Register the meta type for saving and loading the playlist.
-    qRegisterMetaType<QList <QString> >("QList<QString>");
-    qRegisterMetaTypeStreamOperators<QList <QString> >("QList<QString>");
 	LoadSettings();
     QIcon icon("vorbital.ico");
 	setWindowIcon(icon);
@@ -141,15 +138,14 @@ void VorbitalDlg::LoadSettings()
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 	}
     qDebug() << "Playlist: " << configData->value("playlist");
-    QList<QVariant> songList;
-    // This is what we want, but it throws a type conversion error.
-    //QList<QString> songList;
-    songList = (configData->value( "playlist" )).toList();
+    QString songs = configData->value("playlist").toString();
+    QStringList songList = songs.split(";");
     for( int i = 0; i < songList.count(); i++ )
     {
-        QFileInfo info(songList[i].toString());
+        QFileInfo info(songList[i]);
         QListWidgetItem* item = new QListWidgetItem(info.baseName());
         item->setData(Qt::UserRole, QVariant(info.absoluteFilePath()));
+        qDebug() << "Adding to playlist: " << songList[i];
         _lstPlaylist->addItem(item);
     }
     qDebug() << "Loaded Settings: Randomize =" << _randomize << ", Volume =" << volume << ", Width =" << sizex <<
@@ -166,19 +162,23 @@ void VorbitalDlg::SaveSettings()
 	QSize wsize = size();
 	configData->setValue("sizex", wsize.width());
 	configData->setValue("sizey", wsize.height());
-    QList<QString> playlistItems;
+    QString playlistItems;
     for( int i = 0; i < _lstPlaylist->count(); i++ )
     {
         QListWidgetItem* item = _lstPlaylist->item(i);
         QVariant variant = item->data(Qt::UserRole);
         QString filename = variant.toString();
         qDebug() << "Saving Playlist Item: " << filename << "'.";
-		playlistItems << filename;
+        if( i > 0 )
+        {
+            playlistItems += ";";
+        }
+		playlistItems += filename;
     }
-    configData->setValue("playlist", QVariant::fromValue<QList <QString> >(playlistItems));
+    configData->setValue("playlist", playlistItems);
     configData->sync();
     qDebug() << "Saved Settings: Randomize =" << _randomize << ", Volume =" << _volumeSlider->value() <<
-        ", Width =" << wsize.width() << ", Height =" << wsize.height() << ", Playlist =" << playlistItems.count() << " items.";
+        ", Width =" << wsize.width() << ", Height =" << wsize.height() << ", Playlist =" << _lstPlaylist->count() << " items.";
 	delete configData;
 }
 
